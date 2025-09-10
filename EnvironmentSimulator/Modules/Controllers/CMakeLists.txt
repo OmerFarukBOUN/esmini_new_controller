@@ -56,7 +56,8 @@ target_link_libraries(
     ${TARGET}
     PRIVATE project_options
             ${HDI_LIBS}
-            zenohcxx::zenohc)
+            zenohcxx::zenohc
+            ${OSI_LIBRARIES})
 
 target_include_directories(
     ${TARGET}
