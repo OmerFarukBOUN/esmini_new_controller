@@ -296,6 +296,30 @@
                 <Property name="execMode" value="$ExecMode" />
             </Properties>
         </Controller>
+        <Controller name="ZenohHostVehicleDataController">
+            <ParameterDeclarations>
+                <!-- port: port number [1, 65535] OR 0 to pick automatically starting at basePort (see below) -->
+                <!-- Default = 49950 -->
+                <ParameterDeclaration name="ZenohKey" parameterType="string" value="" />
+                <!-- basePort: Specify first port nr. Default = 49950 -->
+                <!-- Since this value is used by all instances of the controller, the last -->
+                <!-- occurence of this parameter is applied in case it's specified in -->
+                <!-- multiple controllers -->
+                <ParameterDeclaration name="ZenohBaseExpression" parameterType="string" value="esmini/in/" />
+                <!-- execModeasynchronus blocking: true = run as separate port number [1, 65535] port number of first instance, additional instances -->
+                <!-- execMode: synchronous/asynchronous Default = asynchronous -->
+                <!-- synchronous: wait for and read only one (oldest) message each timestep. Blocking with timeout 500 ms -->
+                <!-- asynchronous: consume all received messages and ignore all but the latest. Non blocking (don't wait) -->
+                <ParameterDeclaration name="ExecMode" parameterType="string" value="synchronous" />
+                <ParameterDeclaration name="DeadReckon" parameterType="string" value="false" />
+            </ParameterDeclarations>
+            <Properties>
+                <Property name="zenohKey" value="$ZenohKey" />
+                <Property name="zenohBaseExpression" value="$ZenohBaseExpression" />
+                <Property name="execMode" value="$ExecMode" />
+                <Property name="deadReckon" value="$DeadReckon" />
+            </Properties>
+        </Controller>
         <Controller name="offroadFollower">
             <ParameterDeclarations>
                 <ParameterDeclaration name="FollowEntity" parameterType="string" value="Ego" />

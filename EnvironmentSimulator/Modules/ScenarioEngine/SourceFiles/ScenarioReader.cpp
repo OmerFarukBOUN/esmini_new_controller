@@ -26,6 +26,7 @@
 #include "ControllerNaturalDriver.hpp"
 #include "ControllerALKS.hpp"
 #include "ControllerUDPDriver.hpp"
+#include "ControllerZenohHostVehicleData.hpp"
 #include "ControllerECE_ALKS_RefDriver.hpp"
 #include "ControllerALKS_R157SM.hpp"
 #include "ControllerLooming.hpp"
@@ -95,6 +96,7 @@ void ScenarioReader::LoadControllers()
     RegisterController(CONTROLLER_NATURAL_DRIVER_TYPE_NAME, InstantiateNaturalDriver);
     RegisterController(CONTROLLER_ALKS_TYPE_NAME, InstantiateControllerALKS);
     RegisterController(CONTROLLER_UDP_DRIVER_TYPE_NAME, InstantiateControllerUDPDriver);
+    RegisterController(CONTROLLER_ZENOH_HOSTVEHICLEDATA_TYPE_NAME, InstantiateControllerZenohHostVehicleData);
     RegisterController(CONTROLLER_ECE_ALKS_REF_DRIVER_TYPE_NAME, InstantiateControllerECE_ALKS_REF_DRIVER);
     RegisterController(CONTROLLER_ALKS_R157SM_TYPE_NAME, InstantiateControllerALKS_R157SM);
     RegisterController(CONTROLLER_LOOMING_TYPE_NAME, InstantiateControllerLooming);
