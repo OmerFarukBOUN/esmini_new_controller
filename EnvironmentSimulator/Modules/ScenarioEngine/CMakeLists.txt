@@ -65,8 +65,7 @@ add_library(
 target_link_libraries(
     ${TARGET}
     PRIVATE project_options
-    zenohcxx::zenohc
-    ${OSI_LIBRARIES})
+    zenohcxx::zenohc)
 
 target_include_directories(
     ${TARGET}
