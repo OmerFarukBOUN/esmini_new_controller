@@ -160,10 +160,7 @@ void ControllerZenohHostVehicleData::Step(double timeStep)
     // }
 }
 
-int ControllerZenohHostVehicleData::Activate(ControlActivationMode lat_activation_mode,
-                                             ControlActivationMode long_activation_mode,
-                                             ControlActivationMode light_activation_mode,
-                                             ControlActivationMode anim_activation_mode)
+int ControllerZenohHostVehicleData::Activate(const ControlActivationMode (&mode)[static_cast<unsigned int>(ControlDomains::COUNT)])
 {
     if (object_)
     {
@@ -225,7 +222,7 @@ int ControllerZenohHostVehicleData::Activate(ControlActivationMode lat_activatio
         vehicle_.SetMaxSpeed(30.0);
     }
 
-    return Controller::Activate(lat_activation_mode, long_activation_mode, light_activation_mode, anim_activation_mode);
+    return Controller::Activate(mode);
 }
 
 void ControllerZenohHostVehicleData::ReportKeyEvent(int key, bool down)
