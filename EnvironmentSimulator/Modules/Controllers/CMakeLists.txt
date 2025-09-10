@@ -9,6 +9,10 @@ include(${CMAKE_SOURCE_DIR}/support/cmake/rule/disable_static_analysis.cmake)
 include(${CMAKE_SOURCE_DIR}/support/cmake/rule/disable_iwyu.cmake)
 include(${CMAKE_SOURCE_DIR}/support/cmake/rule/enable_fpic.cmake)
 
+# ############################### Zenoh ##############################################################################
+find_package(zenohc REQUIRED)
+find_package(zenohcxx REQUIRED)
+
 # ############################### Setting target files ###############################################################
 
 file(
@@ -51,7 +55,8 @@ endif()
 target_link_libraries(
     ${TARGET}
     PRIVATE project_options
-            ${HDI_LIBS})
+            ${HDI_LIBS}
+            zenohcxx::zenohc)
 
 target_include_directories(
     ${TARGET}
