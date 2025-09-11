@@ -93,6 +93,9 @@ set_folder(
     esmini-dyn
     ${ApplicationsFolder})
 set_folder(
+    esmini-zenoh
+    ${ApplicationsFolder})
+set_folder(
     dat2csv
     ${ApplicationsFolder})
 if(BUILD_ODRPLOT)
