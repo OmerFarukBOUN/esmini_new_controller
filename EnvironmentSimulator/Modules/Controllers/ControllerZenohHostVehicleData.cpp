@@ -103,7 +103,7 @@ void ControllerZenohHostVehicleData::Step(double timeStep)
     }
     if (receivedSample.has_value() || deadReckon_)
     {
-        // LOG_INFO("Sample Received: {}", i++);
+        LOG_INFO("Sample Received: {}", i++);
         if (timeStep > SMALL_NUMBER)
         {
             // In driver input mode the vehicle is updated continuously wrt latest input
@@ -186,7 +186,7 @@ int ControllerZenohHostVehicleData::Activate(const ControlActivationMode (&mode)
                         zenoh_key_expression_,
                         [](const zenoh::Sample& sample)
                         {
-                            LOG_INFO("Coming data");
+                            // LOG_INFO("Coming data");
                             osi3::HostVehicleData data;
                             const auto&           vec = sample.get_payload().as_vector();
                             data.ParseFromArray(vec.data(), static_cast<int>(vec.size()));
@@ -201,7 +201,7 @@ int ControllerZenohHostVehicleData::Activate(const ControlActivationMode (&mode)
                                                                                  zenoh_key_expression_,
                                                                                  [](const zenoh::Sample& sample)
                                                                                  {
-                                                                                    LOG_INFO("Coming data");
+                                                                                    // LOG_INFO("Coming data");
                                                                                      osi3::HostVehicleData data;
                                                                                      const auto&           vec = sample.get_payload().as_vector();
                                                                                      data.ParseFromArray(vec.data(), static_cast<int>(vec.size()));
