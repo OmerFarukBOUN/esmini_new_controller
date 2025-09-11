@@ -28,6 +28,7 @@ add_subdirectory(Libraries/esminiRMLib)
 
 add_subdirectory(Applications/esmini)
 add_subdirectory(Applications/esmini-dyn)
+add_subdirectory(Applications/esmini-zenoh)
 if(USE_OSG)
     add_subdirectory(Applications/odrviewer)
 endif(USE_OSG)
