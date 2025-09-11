@@ -15,7 +15,7 @@ std::pair<std::optional<std::string>, std::vector<char*>> parseArgs(int argc, ch
     for (int i = 1; i < argc; ++i)
     {
         std::string arg = argv[i];
-        if (arg == "osi_subscriber_keyexpr")
+        if (arg == "--osi_subscriber_keyexpr")
         {
             if (i + 1 < argc)
             {
