@@ -52,7 +52,7 @@ int main(int argc, char** argv)
     int newArgc                = static_cast<int>(newArgv.size());
 
     // Init esmini
-    if (SE_InitWithArgs(newArgc, newArgv.data()) != 0)
+    if (SE_InitWithArgs(newArgc, const_cast<const char**>(newArgv.data())) != 0)
     {
         std::cerr << "Failed to initialize esmini" << std::endl;
         return -1;
