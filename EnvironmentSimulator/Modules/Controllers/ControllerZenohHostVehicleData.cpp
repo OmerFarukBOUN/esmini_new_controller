@@ -103,10 +103,13 @@ void ControllerZenohHostVehicleData::Step(double timeStep)
     }
     if (receivedSample.has_value() || deadReckon_)
     {
-        LOG_INFO("Sample Received: {}", i++);
+        // LOG_INFO("Sample Received: {}", i++);
         if (timeStep > SMALL_NUMBER)
         {
             // In driver input mode the vehicle is updated continuously wrt latest input
+            auto total_acc = lastMsg.vehicle_powertrain().pedal_position_acceleration() - lastMsg.vehicle_brake_system().pedal_position_brake();
+            auto total_steer = lastMsg.vehicle_steering().vehicle_steering_wheel().angle();
+            LOG_INFO("Total Acc: {}, Total Steer: {}", total_acc, total_steer);
             vehicle_.DrivingControlAnalog(
                 timeStep,
                 lastMsg.vehicle_powertrain().pedal_position_acceleration() - lastMsg.vehicle_brake_system().pedal_position_brake(),

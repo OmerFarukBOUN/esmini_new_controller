@@ -7,7 +7,7 @@
 #include "zenoh.hxx"
 
 #define CONTROLLER_ZENOH_HOSTVEHICLEDATA_TYPE_NAME "ZenohHostVehicleDataController"
-#define DEFAULT_ZENOH_EXPRESSION                   "hostvehicledata/"
+#define DEFAULT_ZENOH_EXPRESSION                   "esmini/in/"
 #define ZENOH_SYNCHRONOUS_MODE_TIMEOUT_MS          500
 
 namespace scenarioengine
