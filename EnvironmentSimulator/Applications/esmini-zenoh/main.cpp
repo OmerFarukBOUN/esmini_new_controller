@@ -50,7 +50,11 @@ int main(int argc, char** argv)
     // Parse arguments and strip custom flag
     auto [keyexprOpt, newArgv] = parseArgs(argc, argv);
     int newArgc                = static_cast<int>(newArgv.size());
-
+std::cout << "newArgv (" << newArgc << " args):" << std::endl;
+for (int i = 0; i < newArgc; ++i)
+{
+    std::cout << "  [" << i << "]: " << newArgv[i] << std::endl;
+}
     // Init esmini
     if (SE_InitWithArgs(newArgc, const_cast<const char**>(newArgv.data())) != 0)
     {
