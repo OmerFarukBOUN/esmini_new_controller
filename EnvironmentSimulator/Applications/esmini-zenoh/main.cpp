@@ -50,6 +50,7 @@ int main(int argc, char** argv)
     // Parse arguments and strip custom flag
     auto [keyexprOpt, newArgv] = parseArgs(argc, argv);
     int newArgc                = static_cast<int>(newArgv.size());
+    std::out << newArgv << std::endl;
 
     // Init esmini
     if (SE_InitWithArgs(newArgc, const_cast<const char**>(newArgv.data())) != 0)
@@ -59,14 +60,16 @@ int main(int argc, char** argv)
     }
 
     // Optional Zenoh setup
+    std::optional<zenoh::Session>   pub_session;
     std::optional<zenoh::Publisher> publisher;
+
     if (keyexprOpt.has_value())
     {
         std::string keyexpr = keyexprOpt.value().empty() ? "esmini/gt" : keyexprOpt.value();
 
         auto config = zenoh::Config::create_default();
-        auto pub_session = zenoh::Session::open(std::move(config));
-        publisher = pub_session.declare_publisher(zenoh::KeyExpr(keyexpr));
+        pub_session = zenoh::Session::open(std::move(config));
+        publisher   = pub_session->declare_publisher(zenoh::KeyExpr(keyexpr));
 
         std::cout << "Zenoh publisher set on keyexpr: " << keyexpr << std::endl;
     }
