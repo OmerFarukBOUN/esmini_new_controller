@@ -8,6 +8,10 @@ set(TARGET
 include(${CMAKE_SOURCE_DIR}/support/cmake/rule/disable_static_analysis.cmake)
 include(${CMAKE_SOURCE_DIR}/support/cmake/rule/disable_iwyu.cmake)
 
+# ############################### Zenoh ##############################################################################
+find_package(zenohc REQUIRED)
+find_package(zenohcxx REQUIRED)
+
 # ############################### Setting target files ###############################################################
 
 set(SOURCES
@@ -36,6 +40,11 @@ set_target_properties(
                INSTALL_RPATH
                "$ORIGIN:${INSTALL_PATH}")
 
+target_compile_definitions(${TARGET}
+    PRIVATE ZENOHCXX_ZENOHC=1  # Use Zenoh-C backend
+    # PRIVATE ZENOHCXX_ZENOHPICO=1  # Uncomment to use Zenoh-Pico backend
+)
+
 target_include_directories(
     ${TARGET}
     PRIVATE ${ESMINI_LIB_PATH}
@@ -50,7 +59,8 @@ target_link_libraries(
     ${TARGET}
     PRIVATE esminiLib
     PRIVATE CommonMini
-    PRIVATE ${TIME_LIB})
+    PRIVATE ${TIME_LIB}
+    zenohcxx::zenohc)
 # PRIVATE ${FMT_LIBRARIES})
 
 if(USE_OSI)
