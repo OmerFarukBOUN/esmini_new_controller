@@ -173,7 +173,7 @@ int ControllerZenohHostVehicleData::Activate(const ControlActivationMode (&mode)
         {
             try
             {
-                LOG_INFO("Initializing Zenoh subscriber for key: %s", zenoh_key_expression_.c_str());
+                LOG_INFO("Initializing Zenoh subscriber for key: {}", zenoh_key_expression_.c_str());
                 // std::cout << "Initializing Zenoh subscriber for key: " << zenoh_key_expression_ << std::endl;
                 zenoh::Config config = zenoh::Config::create_default();
                 // config.insert_json5("connect/endpoints", R"(["tcp/127.0.0.1:7447"])"); // Connect to zenoh_bridge
@@ -206,11 +206,11 @@ int ControllerZenohHostVehicleData::Activate(const ControlActivationMode (&mode)
                                                                                      return data;
                                                                                  });
                 }
-                LOG_INFO("Zenoh subscriber created for key: %s", zenoh_key_expression_.c_str());
+                LOG_INFO("Zenoh subscriber created for key: {}", zenoh_key_expression_.c_str());
             }
             catch (const std::exception& e)
             {
-                LOG_ERROR_AND_QUIT("Zenoh initialization failed: %s", e.what());
+                LOG_ERROR_AND_QUIT("Zenoh initialization failed: {}", e.what());
             }
         }
 
