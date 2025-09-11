@@ -78,7 +78,7 @@ void ControllerZenohHostVehicleData::Init()
     }
     Controller::Init();
 }
-// int i = 0;
+int i = 0;
 void ControllerZenohHostVehicleData::Step(double timeStep)
 {
     std::optional<osi3::HostVehicleData> receivedSample;
