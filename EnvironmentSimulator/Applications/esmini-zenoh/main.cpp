@@ -15,7 +15,7 @@ std::pair<std::optional<std::string>, std::vector<char*>> parseArgs(int argc, ch
     for (int i = 1; i < argc; ++i)
     {
         std::string arg = argv[i];
-        if (arg == "--osi_subscriber_keyexpr")
+        if (arg == "osi_subscriber_keyexpr")
         {
             if (i + 1 < argc)
             {
@@ -50,7 +50,6 @@ int main(int argc, char** argv)
     // Parse arguments and strip custom flag
     auto [keyexprOpt, newArgv] = parseArgs(argc, argv);
     int newArgc                = static_cast<int>(newArgv.size());
-    std::cout << newArgv << std::endl;
 
     // Init esmini
     if (SE_InitWithArgs(newArgc, const_cast<const char**>(newArgv.data())) != 0)
