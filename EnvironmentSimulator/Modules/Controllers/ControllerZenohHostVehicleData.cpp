@@ -78,7 +78,7 @@ void ControllerZenohHostVehicleData::Init()
     }
     Controller::Init();
 }
-int i = 0;
+int  i = 0;
 void ControllerZenohHostVehicleData::Step(double timeStep)
 {
     std::optional<osi3::HostVehicleData> receivedSample;
@@ -89,7 +89,10 @@ void ControllerZenohHostVehicleData::Step(double timeStep)
     }
     else
     {
-        receivedSample = zenoh_receiver_->receive(ZENOH_SYNCHRONOUS_MODE_TIMEOUT_MS);
+        do
+        {
+            receivedSample = zenoh_receiver_->receive(ZENOH_SYNCHRONOUS_MODE_TIMEOUT_MS);
+        } while (!receivedSample.has_value() && !deadReckon_);
     }
     if (receivedSample.has_value())
     {
@@ -101,32 +104,34 @@ void ControllerZenohHostVehicleData::Step(double timeStep)
                      roadmanager::Position::PosMode::Z_REL | roadmanager::Position::PosMode::H_ABS | roadmanager::Position::PosMode::P_REL |
                          roadmanager::Position::PosMode::R_REL);
     }
-    if (receivedSample.has_value() || deadReckon_)
+    else
     {
-        // LOG_INFO("Sample Received: {}", i++);
-        if (timeStep > SMALL_NUMBER)
-        {
-            // In driver input mode the vehicle is updated continuously wrt latest input
-            auto total_acc = lastMsg.vehicle_powertrain().pedal_position_acceleration() - lastMsg.vehicle_brake_system().pedal_position_brake();
-            auto total_steer = lastMsg.vehicle_steering().vehicle_steering_wheel().angle();
-            LOG_INFO("Total Acc: {}, Total Steer: {}", total_acc, total_steer);
-            vehicle_.DrivingControlAnalog(
-                timeStep,
-                lastMsg.vehicle_powertrain().pedal_position_acceleration() - lastMsg.vehicle_brake_system().pedal_position_brake(),
-                lastMsg.vehicle_steering().vehicle_steering_wheel().angle());
-
-            // Register updated vehicle position
-            gateway_->updateObjectWorldPosXYH(object_->id_, 0.0, vehicle_.posX_, vehicle_.posY_, vehicle_.heading_);
-            gateway_->updateObjectSpeed(object_->id_, 0.0, vehicle_.speed_);
-            gateway_->updateObjectWheelAngle(object_->id_, 0.0, msg.vehicle_steering().vehicle_steering_wheel().angle());
-
-            // Fetch Z and Pitch from OpenDRIVE position
-            roadmanager::Position* pos = &gateway_->getObjectStatePtrById(static_cast<int>(msg.host_vehicle_id().value()))->state_.pos;
-            vehicle_.SetZ(pos->GetZ());
-            vehicle_.SetPitch(pos->GetP());
-        }
-        Controller::Step(timeStep);
+        LOG_WARN("ControllerZenohHostVehicleData: no data received");
     }
+
+    // LOG_INFO("Sample Received: {}", i++);
+    if (timeStep > SMALL_NUMBER)
+    {
+        // In driver input mode the vehicle is updated continuously wrt latest input
+        auto total_acc   = lastMsg.vehicle_powertrain().pedal_position_acceleration() - lastMsg.vehicle_brake_system().pedal_position_brake();
+        auto total_steer = lastMsg.vehicle_steering().vehicle_steering_wheel().angle();
+        LOG_INFO("Total Acc: {}, Total Steer: {}", total_acc, total_steer);
+        vehicle_.DrivingControlAnalog(
+            timeStep,
+            lastMsg.vehicle_powertrain().pedal_position_acceleration() - lastMsg.vehicle_brake_system().pedal_position_brake(),
+            lastMsg.vehicle_steering().vehicle_steering_wheel().angle());
+
+        // Register updated vehicle position
+        gateway_->updateObjectWorldPosXYH(object_->id_, 0.0, vehicle_.posX_, vehicle_.posY_, vehicle_.heading_);
+        gateway_->updateObjectSpeed(object_->id_, 0.0, vehicle_.speed_);
+        gateway_->updateObjectWheelAngle(object_->id_, 0.0, msg.vehicle_steering().vehicle_steering_wheel().angle());
+
+        // Fetch Z and Pitch from OpenDRIVE position
+        roadmanager::Position* pos = &gateway_->getObjectStatePtrById(static_cast<int>(msg.host_vehicle_id().value()))->state_.pos;
+        vehicle_.SetZ(pos->GetZ());
+        vehicle_.SetPitch(pos->GetP());
+    }
+    Controller::Step(timeStep);
 
     // auto packet             = host_vehicle_datas_[zenoh_key_expression_];
     // auto host_vehicle_data_ = packet.data;
@@ -204,7 +209,7 @@ int ControllerZenohHostVehicleData::Activate(const ControlActivationMode (&mode)
                                                                                  zenoh_key_expression_,
                                                                                  [](const zenoh::Sample& sample)
                                                                                  {
-                                                                                    // LOG_INFO("Coming data");
+                                                                                     // LOG_INFO("Coming data");
                                                                                      osi3::HostVehicleData data;
                                                                                      const auto&           vec = sample.get_payload().as_vector();
                                                                                      data.ParseFromArray(vec.data(), static_cast<int>(vec.size()));
