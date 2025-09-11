@@ -186,6 +186,7 @@ int ControllerZenohHostVehicleData::Activate(const ControlActivationMode (&mode)
                         zenoh_key_expression_,
                         [](const zenoh::Sample& sample)
                         {
+                            LOG_INFO("Coming data");
                             osi3::HostVehicleData data;
                             const auto&           vec = sample.get_payload().as_vector();
                             data.ParseFromArray(vec.data(), static_cast<int>(vec.size()));
@@ -200,6 +201,7 @@ int ControllerZenohHostVehicleData::Activate(const ControlActivationMode (&mode)
                                                                                  zenoh_key_expression_,
                                                                                  [](const zenoh::Sample& sample)
                                                                                  {
+                                                                                    LOG_INFO("Coming data");
                                                                                      osi3::HostVehicleData data;
                                                                                      const auto&           vec = sample.get_payload().as_vector();
                                                                                      data.ParseFromArray(vec.data(), static_cast<int>(vec.size()));
